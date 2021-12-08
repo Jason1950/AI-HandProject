@@ -7,7 +7,13 @@
     <script src="./js/control_utils.js" crossorigin="anonymous"></script>
     <script src="./js/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="./js/hands.js" crossorigin="anonymous"></script>
-    <script src="handJS.js" type="module"></script>
+    
+    <script src="jquery.1.6.1.min.js"></script>
+    <script src="jquery.spritely.js"></script>
+    <script src="jquery.backgroundPosition.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/17.2.0/Tween.min.js"></script>
+    
+
     <style>
         body{
             margin: 0px;
@@ -15,7 +21,7 @@
         body {
                 margin: 0;
                 background-color: 	#ECF5FF;
-                color: #fff;
+                /* color: #fff; */
                 font-family: Monospace;
                 font-size: 18px;
                 line-height: 24px;
@@ -30,22 +36,109 @@
         #a2{
             position: absolute;
             top: 0px;
-            width: 60vh;
+            width: 35vh;
             transform: rotateY(180deg);
         }
+    </style>
+
+<style>
+    body {
+        /* font-family:verdana,arial;
+        padding:20px; */
+    }
+    .bd {
+        text-align:center;
+        z-index: 1;
+        position: absolute;
+        left: 35%;
+        top: 30%;
+        transform: translate(-35%,-30%);
+    }
+    .container2 {
+        margin:0 auto;
+        width:266px;
+    }
+    .slot-wrapper {
+         border: 1px solid #000000;
+    }
+    .slot {
+        background:url("images/reel_normal.png") repeat-y; /*Taken from http://www.swish-designs.co.uk*/
+        width:86px;
+        height:70px;
+        float:left;
+        border:1px solid #000;
+        background-position:0 4px;
+    }
+    .motion {
+        background:url("images/reel_blur.png") repeat-y; /*Taken from http://www.swish-designs.co.uk*/
+    }
+    button {
+        display:block;
+        width:138px;
+        height:33px;
+        margin:20px 60px;
+        font-size:16px;
+        cursor:pointer;
+    }
+    #result {
+        margin:20px 0;
+        font-size:18px;
+        font-weight:bold;
+        height:22px;
+    }
+    .credits {
+        font-size:15px;
+        margin-top:20px;
+    }
+    .credits .browsers {
+        font-style:italic;
+        font-size:14px;
+        /* color:#777; */
+        margin-top:4px;
+    }
+    .clear {
+        clear:both;
+    }
     </style>
     <link rel="Shortcut Icon" type="image/x-icon" href="./logo.jpg" />
 </head>
 
 <body>
     <div class="container">
-        <div style="height:0px" id="fpsstate">fps0</div>
+        <div style="height:0px" id="fpsstate"></div>
         <video id="a1" class="input_video" ></video>
         <canvas id="a2" class="output_canvas" width="1280px" height="720px"></canvas>
     </div>
     <div id="webgl-Container">
         <canvas id="main3-canvas" style="width:50%" ></canvas>
     </div>
+
+
+    <div class="bd">
+        <h2>Slot machine in Javascript <br> and AI model</h2>
+        <div class="container2">
+            <div class="slot-wrapper">
+                <div id="slot1" class="slot"></div>
+                <div id="slot2" class="slot"></div>
+                <div id="slot3" class="slot"></div>
+                <div class="clear"></div>
+            </div>
+            <div id="result"></div>
+            <div><button id="control">Start</button></div>
+        <!-- <div><button id="ioscheck" onclick="iosCheckButton()">IOS Shake</button></div> -->
+    
+        </div>
+        <div class="credits">
+            <div>Slot Refernce: <a href="http://odhyan.com/blog/">Saurabh Odhyan</a></div>
+        </div>
+        
+    
+    </div>
 </body>
+
+<script type="text/javascript" src="./shake-iospermission.js"></script>
+<script type="text/javascript" src="./shake.js"></script>
+<script type="module" src="slot.js" ></script>
+<script src="handJS.js" type="module"></script>
 
 </html>

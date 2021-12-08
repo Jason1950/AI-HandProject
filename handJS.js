@@ -2,6 +2,8 @@ import Stats from './stats.module.js';
 import * as THREE from './build/three.module.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+
+import {slotFunctionForAll} from'./slot.js'
 let status;
 let renderer, scene, cameraJS;
 let idname = 'hand01';
@@ -108,17 +110,46 @@ function initWebGL(){
     plane.position.z += 0.5;
     scene.add(plane);
 
-    let plane2 = new THREE.Mesh(geom, new THREE.MeshBasicMaterial({
-            color: Math.random() * 0x888888 + 0x888888}));
-    plane2.position.y -= 120;
-    plane2.position.z -= 0.1;
-    plane2.name = idname2;
-    scene.add(plane2);
+    let group = new THREE.Group()
+    let plane2 = new THREE.Mesh(new THREE.BoxBufferGeometry(70, 300, 0.1), new THREE.MeshBasicMaterial({
+            color: 0x000000}));
+    // plane2.position.y -= 120;
+    plane2.position.x += 250;
 
-    let plane3 = new THREE.Mesh(new THREE.SphereGeometry(100, 30, 30), new THREE.MeshBasicMaterial({
-        color: Math.random() * 0x888888 + 0x888888}));
-    plane3.position.y -= 120;
-    plane3.position.x += 220;
+    plane2.position.z -= 202;
+    // plane2.name = idname2;
+    group.add(plane2);
+    plane2 = new THREE.Mesh(new THREE.SphereGeometry(35, 30, 30), new THREE.MeshBasicMaterial({
+        color: 0x000000}));
+    // plane2.position.y -= 120;
+    plane2.position.x += 250;
+    plane2.position.y -= 150;
+    plane2.position.z -= 202;
+    // plane2.name = idname2;
+    group.add(plane2);
+
+    plane2 = new THREE.Mesh(new THREE.SphereGeometry(35, 30, 30), new THREE.MeshBasicMaterial({
+        color: 0x000000}));
+    // plane2.position.y -= 120;
+    plane2.position.x += 250;
+    plane2.position.y += 150;
+    plane2.position.z -= 202;
+    // plane2.name = idname2;
+    group.add(plane2);
+
+    group.position.x += 38;
+    group.position.y += 120;
+    scene.add(group);
+
+
+    
+
+    let plane3 = new THREE.Mesh(new THREE.SphereGeometry(70, 30, 30), new THREE.MeshBasicMaterial({
+        // color: Math.random() * 0x888888 + 0x888888}));
+        color: 0xff0000}));
+        
+    plane3.position.y += 199;
+    plane3.position.x += 270;
     plane3.position.z -= 101;
 
     // plane3.center.set(1,1);
@@ -227,7 +258,7 @@ function render() {
     renderer.render( scene, cameraJS );
     requestAnimationFrame(render);
     // console.log(handXAI);
-
+    TWEEN.update();
 
 }
 
@@ -344,7 +375,29 @@ function onResults(results) {
     //                                                         // 
     // ******************************************************* //
 
+    function bounce (){
+        let moveTarget3 = scene.getObjectByName(idname3);
+        
+        new TWEEN.Tween(moveTarget3.position)
+          .to({y: 199}, 500)
+          .easing(TWEEN.Easing.Cubic.Out)
+          .start()
 
+          
+          /* .onComplete(() => {
+            new TWEEN.Tween(cube.position)
+              .to({y: 0}, 500)
+              .easing(TWEEN.Easing.Cubic.In)
+              .start()
+           } 
+        )*/
+    }
+    let moveTarget3 = scene.getObjectByName(idname3);
+    if ( moveTarget3.position.y<-50){
+        bounce()
+        slotFunctionForAll();
+        console.log('move')
+    }
 
 
 
@@ -373,7 +426,7 @@ function handMoveCube(x,y){
     // let positionY = 190-370*(y);
     
     let positionX = (window.innerWidth)*(0.5-x);
-    let positionY = (window.innerHeight)*(0.5-y);
+    let positionY = (window.innerHeight)*(0.5-y)+100;
 	moveTarget.position.set( positionX,  positionY, 0.5 );
 }
 
@@ -382,15 +435,24 @@ function cubeGO(x,y){
     // let positionY = 190-370*(y);
 
     let positionX = (window.innerWidth)*(0.5-x);
-    let positionY = (window.innerHeight)*(0.5-y);
-    let moveTarget = scene.getObjectByName(idname2);
+    let positionY = (window.innerHeight)*(0.5-y)+100;
+    // let moveTarget = scene.getObjectByName(idname2);
+    let moveTarget;
     let moveTarget3 = scene.getObjectByName(idname3);
-    if(Math.abs(moveTarget.position.x - positionX)<50 && Math.abs(moveTarget.position.y - positionY)<50){
-        moveTarget.position.set( positionX,  positionY, 0 );
+
+    if(Math.abs(moveTarget3.position.x - positionX)<50 && Math.abs(moveTarget3.position.y - positionY)<50 && moveTarget3.position.y<200 && moveTarget3.position.y>-70){
+        moveTarget3.position.set( 270,  positionY, -101);
     }
-    else if(Math.abs(moveTarget3.position.x - positionX)<50 && Math.abs(moveTarget3.position.y - positionY)<50){
-        moveTarget3.position.set( 220,  positionY, -101);
-    }
+    console.log('y:',moveTarget3.position.y)
+
+    if(moveTarget3.position.y>200) moveTarget3.position.y =199
+    
+    // if(Math.abs(moveTarget.position.x - positionX)<50 && Math.abs(moveTarget.position.y - positionY)<50){
+    //     moveTarget.position.set( positionX,  positionY, 0 );
+    // }
+    // else if(Math.abs(moveTarget3.position.x - positionX)<50 && Math.abs(moveTarget3.position.y - positionY)<50){
+    //     moveTarget3.position.set( 220,  positionY, -101);
+    // }
 }
 
 const hands = new Hands({
